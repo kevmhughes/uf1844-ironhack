@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Gallery - IronHack 2024</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+</head>
+
+<body>
+    <header class="container">
+        <nav>
+            <ul>
+                <li><strong>PHOTO GALLERY</strong></li>
+            </ul>
+            <ul>
+                <li><a href="/">Show Images</a></li>
+                <li><a href="/add-image-form">Add Image</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section style="display:flex; gap: 20px">
+        <% images.forEach(i => { %>
+            <article style="width:300px">
+                <p><%= i.title %></p>
+                <img src="<%= i.link %>" alt="<%= i.title %>">
+                <div><%= i.date %></div>
+                <p><%= i.tag %></p>
+            </article>
+            <% }) %>
+    </section>
+</body>
+
+</html>
