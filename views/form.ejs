@@ -1,33 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+  <head>
     <title>Add New Image</title>
-</head>
+    <%- include("./partials/head") %>
+  </head>
 
-<body>
+  <body>
     <form class="container" action="/add-image-form" method="post">
-        <label for="title">Title</label>
-        <input type="text" name="title" id="title" required maxlength="30">
-        <label for="link">Link</label>
-        <input type="url" name="link" id="link" required>
-        <label for="date">Date</label>
-        <input type="date" name="date" id="date" required>
-        <label for="tag">Tag</label>
-        <select name="tag" required>
-            <option selected disabled value="">
-              Choose a tag
-            </option>
-            <option>animals</option>
-            <option>landscapes</option>
-            <option>cars</option>
-          </select>
+      <label for="title">Title</label>
+      <input
+        type="text"
+        name="title"
+        id="title"
+        maxlength="30"
+        pattern="^[A-Za-z0-9_]{1,30}$"
+        title="The title must be 1-30 characters long and can only contain letters, numbers, and underscores."
+        required
+      />
+      <label for="link">Link</label>
+      <input type="url" name="link" id="link" required />
+      <label for="date">Date</label>
+      <input type="date" name="date" id="date" required />
+      <label for="tag">Tag</label>
+      <select name="tag" required>
+        <option selected disabled value="">Choose a tag</option>
+        <option>animals</option>
+        <option>landscapes</option>
+        <option>cars</option>
+      </select>
 
-        <input type="submit" value="add image">
+      <input type="submit" value="add image" />
+
     </form>
-</body>
-
+  </body>
 </html>
