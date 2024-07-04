@@ -6,22 +6,29 @@
   </head>
 
   <body>
-    <!-- add classes for CSS later -->
+
     <header class="container">
       <%- include("./partials/nav") %>
     </header>
 
-    <!-- add classes for CSS later -->
-    <section style="display: flex; gap: 20px">
+    <main class="container">
+      <% if (images.length == 0) { %> 
+      <p>There are no images in the gallery at the moment. <a href="/add-image-form">Add one now.</a></p>
+      <% }  else { %>  
+      <p> Number of images in the gallery: <%= images.length %></p>
+      <% } %>
+    </main>
+
+    <section class="grid">
       <% images.forEach(i => { %>
-      <article style="width: 300px">
+      <article>
         <p><%= i.title %></p>
         <img
           src="<%= i.link %>"
           alt="An image with the following title: <%= i.title %>"
         />
         <div><%= i.date %></div>
-        <p><%= i.tag %></p>
+        <p><%= i.category %></p>
       </article>
       <% }) %>
     </section>

@@ -2,10 +2,16 @@
 <html lang="en">
   <head>
     <title>Add New Image</title>
+    <script defer src="form.js"></script>
     <%- include("./partials/head") %>
   </head>
 
   <body>
+
+    <header class="container">
+      <%- include("./partials/nav") %>
+    </header>
+
     <form class="container" action="/add-image-form" method="post">
       <label for="title">Title</label>
       <input
@@ -21,16 +27,28 @@
       <input type="url" name="link" id="link" required />
       <label for="date">Date</label>
       <input type="date" name="date" id="date" required />
-      <label for="tag">Tag</label>
-      <select name="tag" required>
-        <option selected disabled value="">Choose a tag</option>
+      <label for="category">Category</label>
+      <select name="category" required>
+        <option selected disabled value="">Choose a category</option>
         <option>animals</option>
         <option>landscapes</option>
         <option>cars</option>
       </select>
-
       <input type="submit" value="add image" />
-
     </form>
+
+    <% if (isImagePosted) { %>
+      <div id="message" class="container alert success">
+        Image added to gallery correctly. 
+      </div>
+      <% } %>
+
+      <% if (imageAlreadyAdded) { %>
+        <div id="already-message" class="container alert warning">
+          This image is already in the database. 
+        </div>
+        <% } %>
+
+      
   </body>
 </html>

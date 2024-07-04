@@ -6,38 +6,44 @@ const morgan = require("morgan");
 const app = express();
 const port = 3000;
 
+//middleware to log all client requests
+app.use(morgan("tiny"));
+// middleware to process POST requests
+app.use(express.urlencoded({ extended: true }));
+// middleware so the client can make GET requests to the static resources in the public folder
+app.use(express.static("public"));
+
 // database
 const images = [
-/*   {
-    title: "dog_2",
-    link: "https://thumbor.forbes.com/thumbor/fit-in/1290x/https://www.forbes.com/advisor/wp-content/uploads/2023/07/top-20-small-dog-breeds.jpeg.jpg",
-    date: "2024-07-02",
-    tag: "animals",
-  },
-  {
-    title: "dog_1",
-    link: "https://img.freepik.com/free-photo/isolated-happy-smiling-dog-white-background-portrait-4_1562-693.jpg",
-    date: "2024-07-04",
-    tag: "animals",
-  }, */
+  /*   {
+      title: "dog_2",
+      link: "https://thumbor.forbes.com/thumbor/fit-in/1290x/https://www.forbes.com/advisor/wp-content/uploads/2023/07/top-20-small-dog-breeds.jpeg.jpg",
+      date: "2024-07-02",
+      category: "animals",
+    },
+    {
+      title: "dog_1",
+      link: "https://img.freepik.com/free-photo/isolated-happy-smiling-dog-white-background-portrait-4_1562-693.jpg",
+      date: "2024-07-04",
+      category: "animals",
+    }, */
 ];
 
 app.set("view engine", "ejs");
 
-//middleware
-app.use(morgan("tiny"));
-app.use(express.urlencoded({ extended: true }));
-
 // GET request to render "/"
 app.get("/", (req, res) => {
   res.render("home", {
-    images: images,
+    images /* only one attribute is needed if the key is the same as the value =>  images: images, */,
   });
 });
 
 // GET request to render "/add-image-form"
 app.get("/add-image-form", (req, res) => {
-  res.render("form");
+  res.render("form", {
+    isImagePosted: undefined,
+    imageAlreadyAdded: undefined,
+  });
 });
 
 // POST request to
@@ -49,12 +55,22 @@ app.post("/add-image-form", (req, res) => {
   console.log("URL being uploaded", urlUploaded);
   console.log(images);
 
-    images.push(req.body);
-    res.redirect("/");
+  /* res.redirect("/"); */
 
+  if (!isUrlInDatabase) {
+    images.push(req.body);
+    res.render("form", {
+      isImagePosted: true,
+      imageAlreadyAdded: undefined,
+    });
+  } else {
+    res.render("form", {
+      isImagePosted: undefined,
+      imageAlreadyAdded: true,
+    });
+  }
 });
 
 app.listen(port, (req, res) => {
   console.log(`The server is running on port ${port}`);
 });
-
