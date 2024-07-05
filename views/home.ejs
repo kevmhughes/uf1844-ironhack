@@ -6,35 +6,42 @@
   </head>
 
   <body>
-
-    <header class="container">
-      <%- include("./partials/nav") %>
-    </header>
+    <header class="container"><%- include("./partials/nav") %></header>
 
     <main class="container">
-      <% if (images.length == 0) { %> 
-      <p>There are no images in the gallery at the moment. <a href="/add-image-form">Add one now.</a></p>
-      <% }  else { %>  
-      <p> Number of images in the gallery: <%= images.length %></p>
+      <% if (images.length == 0) { %>
+      <p>
+        There are no images in the gallery at the moment.
+        <a href="/add-image-form">Add one now.</a>
+      </p>
+      <% } else { %>
+      <p>Number of images in the gallery: <%= images.length %></p>
       <% } %>
 
-
-    <section class="grid">
-      <% images.forEach(i => { %>
-      <article style="background-color: rgb(<%= i.color %>)">
-        <p><%= i.title %></p>
-        <img
-          src="<%= i.link %>"
-          alt="An image with the following title: <%= i.title %>"
-        />
-        <div><%= i.date %></div>
-        <p><%= i.category %></p>
-        <div>rgb: <%= i.colorText %></div>
-      </article>
-      <% }) %>
-    </section>
-
+      <section class="grid">
+        <% images.forEach(i => { %>
+        <article>
+          <p><%= i.title %></p>
+          <img
+            src="<%= i.link %>"
+            alt="An image with the following title: <%= i.title %>"
+          />
+          <div><%= i.date %></div>
+          <p><%= i.category %></p>
+          <div style="display: flex; justify-content: space-between;">
+            <div>rgb: <%= i.colorText %></div>
+            <div
+              style="
+                height: 30px;
+                width: 30px;
+                border-radius: 50%;
+                border: solid;
+                background-color: rgb(<%= i.color %>)"
+            ></div>
+          </div>
+        </article>
+        <% }) %>
+      </section>
     </main>
-
   </body>
 </html>

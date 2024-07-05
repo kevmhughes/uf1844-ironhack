@@ -51,7 +51,7 @@ const getRgb = async (image) => {
   // adds property with key "color" and value "rgb"
   image.color = colors[0]._rgb.slice(0, 3).join(" ");
   // adds property with key "colorText" and value "rgb" in CSV format
-  image.colorText = colors[0]._rgb.slice(0, 3);
+  image.colorText = colors[0]._rgb.slice(0, 3).join(", ");
 };
 
 const addRgbToImages = async (images) => {
@@ -61,6 +61,7 @@ const addRgbToImages = async (images) => {
 
 // GET request to render "/"
 app.get("/", async (req, res) => {
+  console.log(images)
   await addRgbToImages(images);
   res.render("home", {
     images /* only one attribute is needed if the key is the same as the value =>  images: images, */,
