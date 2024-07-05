@@ -20,8 +20,10 @@
 
       <section class="grid">
         <% images.forEach(i => { %>
-        <article>
-          <p><%= i.title %></p>
+        <article style="display: flex;
+        flex-direction: column;
+        justify-content: space-between;">
+          <p><%= i.title.toUpperCase() %></p>
           <img
             src="<%= i.link %>"
             alt="An image with the following title: <%= i.title %>"
@@ -34,7 +36,7 @@
               style="
                 height: 30px;
                 width: 30px;
-                border-radius: 50%;
+                border-radius: 5px;
                 border: solid;
                 background-color: rgb(<%= i.color %>)"
             ></div>
