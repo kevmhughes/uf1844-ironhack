@@ -21,7 +21,7 @@
 
     <section class="grid">
       <% images.forEach(i => { %>
-      <article>
+      <article style="background-color: rgb(<%= i.color %>)">
         <p><%= i.title %></p>
         <img
           src="<%= i.link %>"
@@ -29,6 +29,7 @@
         />
         <div><%= i.date %></div>
         <p><%= i.category %></p>
+        <div>rgb: <%= i.colorText %></div>
       </article>
       <% }) %>
     </section>
