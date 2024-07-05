@@ -16,7 +16,7 @@ app.use(express.static("public"));
 
 // database
 const images = [
-/*   {
+  {
     title: "Tarsier",
     link: "https://scontent.fbcn14-1.fna.fbcdn.net/v/t39.30808-6/419044791_10160888975996001_7341947960153957418_n.jpg?stp=cp6_dst-jpg&_nc_cat=103&ccb=1-7&_nc_sid=f727a1&_nc_ohc=XvSG2qlZ7ZAQ7kNvgE4jmuz&_nc_ht=scontent.fbcn14-1.fna&gid=A-dD64Y1zt-oR5YRDC5hgk5&oh=00_AYCyCEjtmAbW5zF6MrZAy7017kMV7ykB_AO6Bhd4lghN1A&oe=668D02B3",
     date: "2024-07-04",
@@ -39,25 +39,29 @@ const images = [
     link: "https://scontent.fbcn14-1.fna.fbcdn.net/v/t39.30808-6/449633607_10161118730131001_3614059652910363683_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=f727a1&_nc_ohc=XOdKuPvZsjYQ7kNvgFkJSRW&_nc_ht=scontent.fbcn14-1.fna&gid=AFU7EaxoGUmLDbp5G1-V8-T&oh=00_AYBq_QgxbTp_So3KjRUNr3puqoNihKn2C3kgw9FTH1cu6g&oe=668CD801",
     date: "2024-07-04",
     category: "animals",
-  }, */
+  },
 ];
 
 app.set("view engine", "ejs");
 
+// async function that gets average color of an image, and then adds new properties 
 const getRgb = async (image) => {
+  // gets average color using the URL
   const colors = await getColors(image.link, { count: 1 });
+  // adds property with key "color" and value "rgb"
   image.color = colors[0]._rgb.slice(0, 3).join(" ");
+  // adds property with key "colorText" and value "rgb" in CSV format
   image.colorText = colors[0]._rgb.slice(0, 3);
 };
 
 const addRgbToImages = async (images) => {
+  // maps images array of objects adding the new properties to all of the objects
   await Promise.all(images.map((image) => getRgb(image)));
 };
 
 // GET request to render "/"
 app.get("/", async (req, res) => {
   await addRgbToImages(images);
-  console.log(images)
   res.render("home", {
     images /* only one attribute is needed if the key is the same as the value =>  images: images, */,
   });
