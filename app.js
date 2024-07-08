@@ -108,6 +108,14 @@ app.post("/add-image-form", (req, res) => {
   }
 });
 
+// DELETE request remove a photo from array when x button is clicked
+app.delete("/", (req, res) => {
+  const findImage = 
+  res.render("home", {
+    images /* only one attribute is needed if the key is the same as the value =>  images: images, */,
+  });
+})
+
 app.listen(port, (req, res) => {
   console.log(`The server is running on port ${port}`);
 });

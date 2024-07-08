@@ -23,11 +23,19 @@
         <article style="display: flex;
         flex-direction: column;
         justify-content: space-between;">
+        <header style="display: flex; justify-content: space-between; align-items: center;">
           <p><%= i.title.toUpperCase() %></p>
+          <p style="padding: 0;
+          padding-left: 10px;
+          padding-right: 10px;
+          border: solid rgba(250, 250, 250, 0.1); cursor: pointer;">x</p>
+        </header>
+        <div>
           <img
             src="<%= i.link %>"
             alt="An image with the following title: <%= i.title %>"
           />
+        </div>
           <div><%= i.date %></div>
           <p><%= i.category %></p>
           <div style="display: flex; justify-content: space-between;">
