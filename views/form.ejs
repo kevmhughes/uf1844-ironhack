@@ -19,8 +19,8 @@
         name="title"
         id="title"
         maxlength="30"
-        pattern="^[a-zA-Z\u00C0-\u017F_ ]+$"
-        title="The title must be 1-30 characters long and can only contain letters, numbers, spaces, and underscores."
+        pattern="/^[a-zA-Z0-9\u00C0-\u017F_ ]+$/;"
+        title="The title must contain 1-30 characters, and can only contain letters, numbers, spaces, and underscores."
         required
       />
       <label for="link">Link</label>
