@@ -90,12 +90,12 @@ app.get("/add-image-form", (req, res) => {
 app.post("/add-image-form", (req, res) => {
   const urltoBeUploaded = req.body.link;
   const isUrlInDatabase = images.find((i) => i.link == urltoBeUploaded);
-
   // redirect method of the response object
   /* res.redirect("/"); */
 
   if (!isUrlInDatabase) {
     images.push(req.body);
+    console.log(req.body)
     res.render("form", {
       isImagePosted: true,
       imageAlreadyAdded: false,
@@ -108,13 +108,16 @@ app.post("/add-image-form", (req, res) => {
   }
 });
 
-// DELETE request remove a photo from array when x button is clicked
-app.delete("/", (req, res) => {
-  const findImage = 
-  res.render("home", {
-    images /* only one attribute is needed if the key is the same as the value =>  images: images, */,
-  });
-})
+// DELETE request to remove a photo from array when "x" button is clicked
+app.delete('/images/:index', (req, res) => {
+  const index = parseInt(req.params.index, 10);
+  if (index >= 0 && index < images.length) {
+      images.splice(index, 1);
+      res.status(200).send('Image deleted');
+  } else {
+      res.status(400).send('Invalid index');
+  }
+});
 
 app.listen(port, (req, res) => {
   console.log(`The server is running on port ${port}`);
