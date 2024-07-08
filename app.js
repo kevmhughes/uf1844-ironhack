@@ -40,6 +40,12 @@ let images = [
     date: "2024-07-11",
     category: "animals",
   },
+  {
+    title: 'sunset_over_tornabous',
+    link: 'https://scontent.fbcn12-1.fna.fbcdn.net/v/t39.30808-6/445170050_10161043878881001_309917333932250219_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=f727a1&_nc_ohc=H2SfunM1IMkQ7kNvgEJw-9c&_nc_ht=scontent.fbcn12-1.fna&oh=00_AYD0gf8APBTdd3TLnlxUBP67gNsroK6IlQqKtW6UcF7r7A&oe=66910AE2',
+    date: '2024-05-04',
+    category: 'landscapes'
+  },
 ];
 
 app.set("view engine", "ejs");
@@ -64,6 +70,7 @@ const addRgbToImages = async (images) => {
 app.get("/", async (req, res) => {
   // sort images by date from most recent to oldest 
   images = images.sort((a , b) => new Date(b.date) - new Date(a.date))
+  console.log(images)
   // async 
   await addRgbToImages(images);
   res.render("home", {
