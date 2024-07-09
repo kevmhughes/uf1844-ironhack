@@ -17,10 +17,12 @@ app.use(express.static("public"));
 // database
 let images = [
   {
-    title: 'Long_eared species',
-    link: 'https://media.wired.com/photos/593261cab8eb31692072f129/master/w_2240,c_limit/85120553.jpg',
-    date: '2024-07-27',
-    category: 'animals'
+    title: 'Dog',
+    link: 'https://thumbor.forbes.com/thumbor/fit-in/1290x/https://www.forbes.com/advisor/wp-content/uploads/2023/07/top-20-small-dog-breeds.jpeg.jpg',
+    date: '2024-07-25',
+    category: 'animals',
+    color: '81 98 22',
+    colorText: '81, 98, 22'
   }
 ];
 
@@ -42,10 +44,8 @@ const addRgbToImages = async (images) => {
   await Promise.all(images.map((image) => getRgb(image)));
 };
 
-// GET request to render "/"
-app.get("/", async (req, res) => {
+app.get("/", /* async */ (req, res) => {
   // async 
-  await addRgbToImages(images);
   res.render("home", {
     images /* only one attribute is needed if the key is the same as the value =>  images: images, */,
   });
@@ -60,17 +60,24 @@ app.get("/add-image-form", (req, res) => {
 });
 
 // POST request to "/add-image-form"
-app.post("/add-image-form", (req, res) => {
+app.post("/add-image-form", async  (req, res) => {
   const urltoBeUploaded = req.body.link;
   const isUrlInDatabase = images.find((i) => i.link == urltoBeUploaded);
+
   // redirect method of the response object
   /* res.redirect("/"); */
 
   if (!isUrlInDatabase) {
-    // sort images by date from most recent to oldest BUT ONLY when adding new image to images array
-    images = images.sort((a , b) => new Date(b.date) - new Date(a.date))
+
     images.push(req.body);
-    console.log(req.body)
+
+     // Process the new image to get its RGB values
+    await addRgbToImages([req.body]);
+    console.log([req.body])
+
+    // sort images by date from most recent to oldest
+    images = images.sort((a , b) => new Date(b.date) - new Date(a.date))
+
     res.render("form", {
       isImagePosted: true,
       imageAlreadyAdded: false,

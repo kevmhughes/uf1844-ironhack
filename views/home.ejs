@@ -16,28 +16,33 @@
         <a href="/add-image-form">Add one now.</a>
       </p>
       <% } else { %>
-      <p class="add-image-message">Number of images in the gallery: <%= images.length %></p>
+      <p class="add-image-message">
+        Number of images in the gallery: <%= images.length %>
+      </p>
       <% } %>
 
       <section class="grid">
         <% images.forEach((i, index) => { %>
         <article class="image-container">
-        <header class="title">
-          <%= i.title.toUpperCase() %>
-          <button class="delete-button" onclick="deleteImage(<%= index %>)">x</button>
-        </header>
-        <div class="image-div"> 
-          <img
-            src="<%= i.link %>"
-            alt="An image with the following title: <%= i.title %>"
-          />
-        </div>
+          <header class="title">
+            <%= i.title.toUpperCase() %>
+            <button class="delete-button" onclick="deleteImage(<%= index %>)">
+              x
+            </button>
+          </header>
+          <div class="image-div">
+            <img
+              src="<%= i.link %>"
+              alt="An image with the following title: <%= i.title %>"
+            />
+          </div>
           <div class="date"><%= i.date %></div>
           <div class="category"><%= i.category %></div>
           <div class="color-info-container">
             <div class="rgb">rgb: <%= i.colorText %></div>
             <div
-              class="color-box" style="background-color: rgb(<%= i.color %>)"
+              class="color-box"
+              style="background-color: rgb(<%= i.color %>)"
             ></div>
           </div>
         </article>
