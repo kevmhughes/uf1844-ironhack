@@ -17,35 +17,11 @@ app.use(express.static("public"));
 // database
 let images = [
   {
-    title: "Tarsier",
-    link: "https://scontent.fbcn14-1.fna.fbcdn.net/v/t39.30808-6/419044791_10160888975996001_7341947960153957418_n.jpg?stp=cp6_dst-jpg&_nc_cat=103&ccb=1-7&_nc_sid=f727a1&_nc_ohc=XvSG2qlZ7ZAQ7kNvgE4jmuz&_nc_ht=scontent.fbcn14-1.fna&gid=A-dD64Y1zt-oR5YRDC5hgk5&oh=00_AYCyCEjtmAbW5zF6MrZAy7017kMV7ykB_AO6Bhd4lghN1A&oe=668D02B3",
-    date: "2024-07-01",
-    category: "animals",
-  },
-  {
-    title: "Coypu",
-    link: "https://scontent.fbcn14-1.fna.fbcdn.net/v/t39.30808-6/417465834_10160826140581001_5317819119682968267_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=f727a1&_nc_ohc=QvleWTwcVYQQ7kNvgFQt4Hg&_nc_ht=scontent.fbcn14-1.fna&gid=A1uss7IQQ4C6zxc-6chQh16&oh=00_AYDUiMblrv6el_Mx07LU8JI7o5itJc4xXuFAc-PeV6e2uQ&oe=668CDCAC",
-    date: "2024-07-06",
-    category: "animals",
-  },
-  {
-    title: "Orangutan",
-    link: "https://scontent.fbcn14-1.fna.fbcdn.net/v/t39.30808-6/367465051_10160512962351001_5626482259291271616_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=f727a1&_nc_ohc=9DWe2_JfUKAQ7kNvgECdigN&_nc_ht=scontent.fbcn14-1.fna&oh=00_AYAfitF1wjG4gL9WEg7gF2F8QngqGp8nC4Z1KdDoINznqw&oe=668CF458",
-    date: "2024-07-05",
-    category: "animals",
-  },
-  {
-    title: "Squirrel",
-    link: "https://scontent.fbcn14-1.fna.fbcdn.net/v/t39.30808-6/449633607_10161118730131001_3614059652910363683_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=f727a1&_nc_ohc=XOdKuPvZsjYQ7kNvgFkJSRW&_nc_ht=scontent.fbcn14-1.fna&gid=AFU7EaxoGUmLDbp5G1-V8-T&oh=00_AYBq_QgxbTp_So3KjRUNr3puqoNihKn2C3kgw9FTH1cu6g&oe=668CD801",
-    date: "2024-07-11",
-    category: "animals",
-  },
-  {
-    title: 'sunset_over_tornabous',
-    link: 'https://scontent.fbcn12-1.fna.fbcdn.net/v/t39.30808-6/445170050_10161043878881001_309917333932250219_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=f727a1&_nc_ohc=H2SfunM1IMkQ7kNvgEJw-9c&_nc_ht=scontent.fbcn12-1.fna&oh=00_AYD0gf8APBTdd3TLnlxUBP67gNsroK6IlQqKtW6UcF7r7A&oe=66910AE2',
-    date: '2024-05-04',
-    category: 'landscapes'
-  },
+    title: 'Long_eared species',
+    link: 'https://media.wired.com/photos/593261cab8eb31692072f129/master/w_2240,c_limit/85120553.jpg',
+    date: '2024-07-27',
+    category: 'animals'
+  }
 ];
 
 app.set("view engine", "ejs");
@@ -54,9 +30,9 @@ app.set("view engine", "ejs");
 const getRgb = async (image) => {
   // gets average color using the URL
   const colors = await getColors(image.link, { count: 1 });
-  // adds property with key "color" and value "rgb"
+  // adds property with key "color" and value "rgb" (taken from get-image-colors array)
   image.color = colors[0]._rgb.slice(0, 3).join(" ");
-  // adds property with key "colorText" and value "rgb" in CSV format
+  // adds property with key "colorText" and value "rgb" in CSV format (taken from get-image-colors array)
   image.colorText = colors[0]._rgb.slice(0, 3).join(", ");
 };
 
@@ -68,9 +44,6 @@ const addRgbToImages = async (images) => {
 
 // GET request to render "/"
 app.get("/", async (req, res) => {
-  // sort images by date from most recent to oldest 
-  images = images.sort((a , b) => new Date(b.date) - new Date(a.date))
-  console.log(images)
   // async 
   await addRgbToImages(images);
   res.render("home", {
@@ -94,6 +67,8 @@ app.post("/add-image-form", (req, res) => {
   /* res.redirect("/"); */
 
   if (!isUrlInDatabase) {
+    // sort images by date from most recent to oldest BUT ONLY when adding new image to images array
+    images = images.sort((a , b) => new Date(b.date) - new Date(a.date))
     images.push(req.body);
     console.log(req.body)
     res.render("form", {

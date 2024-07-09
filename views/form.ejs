@@ -19,7 +19,7 @@
         name="title"
         id="title"
         maxlength="30"
-        pattern="/^[a-zA-Z0-9\u00C0-\u017F_ ]+$/;"
+        pattern="^[\p{L}\p{M}\d\s_]+$"
         title="The title must contain 1-30 characters, and can only contain letters, numbers, spaces, and underscores."
         required
       />
