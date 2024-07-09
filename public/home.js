@@ -3,6 +3,6 @@ async function deleteImage(index) {
     if (response.ok) {
         location.reload();  // Reload the page to update the image list
     } else {
-        alert('Failed to delete image');
+        alert('Failed to delete image.');
     }
 }

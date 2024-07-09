@@ -14,16 +14,9 @@ app.use(express.urlencoded({ extended: true }));
 // middleware so the client can make GET requests to the static resources in the public folder
 app.use(express.static("public"));
 
-// database
+// "database"
 let images = [
-  {
-    title: 'Dog',
-    link: 'https://thumbor.forbes.com/thumbor/fit-in/1290x/https://www.forbes.com/advisor/wp-content/uploads/2023/07/top-20-small-dog-breeds.jpeg.jpg',
-    date: '2024-07-25',
-    category: 'animals',
-    color: '81 98 22',
-    colorText: '81, 98, 22'
-  }
+
 ];
 
 app.set("view engine", "ejs");
@@ -44,10 +37,10 @@ const addRgbToImages = async (images) => {
   await Promise.all(images.map((image) => getRgb(image)));
 };
 
-app.get("/", /* async */ (req, res) => {
-  // async 
+app.get("/", (req, res) => {
+  console.log("images => app.get(/)", images)
   res.render("home", {
-    images /* only one attribute is needed if the key is the same as the value =>  images: images, */,
+    images, /* only one attribute is needed if the key is the same as the value =>  images: images, */
   });
 });
 
@@ -64,16 +57,11 @@ app.post("/add-image-form", async  (req, res) => {
   const urltoBeUploaded = req.body.link;
   const isUrlInDatabase = images.find((i) => i.link == urltoBeUploaded);
 
-  // redirect method of the response object
-  /* res.redirect("/"); */
-
   if (!isUrlInDatabase) {
-
     images.push(req.body);
-
      // Process the new image to get its RGB values
     await addRgbToImages([req.body]);
-    console.log([req.body])
+    console.log("req.body => app.post",[req.body])
 
     // sort images by date from most recent to oldest
     images = images.sort((a , b) => new Date(b.date) - new Date(a.date))
