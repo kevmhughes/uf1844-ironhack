@@ -15,22 +15,24 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 // "database"
-let images = [  {
-  title: 'nok',
-  link: 'https://imageio.forbes.com/specials-images/imageserve/5faad4255239c9448d6c7bcd/Best-Animal-Photos-Contest--Close-Up-Of-baby-monkey/960x0.jpg?format=jpg&width=960',
-  date: '2024-08-04',
-  category: 'animals',
-  color: '69 57 48',
-  colorText: '69, 57, 48'
-},
-{
-  title: '124',
-  link: 'https://thumbs.dreamstime.com/b/jaguar-watercolor-predator-animals-wildlife-wild-cat-leopard-design-t-shirt-107432074.jpg',
-  date: '2024-07-13',
-  category: 'animals',
-  color: '233 226 219',
-  colorText: '233, 226, 219'
-}];
+let images = [
+  {
+    title: "nok",
+    link: "https://imageio.forbes.com/specials-images/imageserve/5faad4255239c9448d6c7bcd/Best-Animal-Photos-Contest--Close-Up-Of-baby-monkey/960x0.jpg?format=jpg&width=960",
+    date: "2024-08-04",
+    category: "animals",
+    color: "69 57 48",
+    colorText: "69, 57, 48",
+  },
+  {
+    title: "124",
+    link: "https://thumbs.dreamstime.com/b/jaguar-watercolor-predator-animals-wildlife-wild-cat-leopard-design-t-shirt-107432074.jpg",
+    date: "2024-07-13",
+    category: "animals",
+    color: "233 226 219",
+    colorText: "233, 226, 219",
+  },
+];
 
 app.set("view engine", "ejs");
 
@@ -102,15 +104,16 @@ app.delete("/images/:index", (req, res) => {
   }
 });
 
+// GET request to search for image in database by title, and then display the filtered array
 app.get("/search", (req, res) => {
   const searchQuery = req.query.title;
-  const filteredImages = images.filter(
-    (i) => i.title.toLowerCase().includes(searchQuery)
+  const filteredImages = images.filter((i) =>
+    i.title.toLowerCase().includes(searchQuery)
   );
   console.log("is it in the database", filteredImages);
   if (filteredImages.length == 0) {
     res.render("home", {
-      // Do I really need to render again??? 
+      // Do I really need to render again???
       // Maybe better to display a message such as => "no search results have been found."
       images: images,
     });
