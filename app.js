@@ -45,6 +45,15 @@ let images = [
     color: "210 166 133",
     colorText: "210, 166, 133",
   },
+  {
+    title: "Bird",
+    link: "https://i.natgeofe.com/k/520e971d-7a22-4a6f-90dc-258df74e45bc/american-goldfinch_3x2.jpg",
+    date: "2024-08-01",
+    category: "animals",
+    id: "6da8589a-99cb-46d1-b909-87f09f856de2",
+    color: "90 115 65",
+    colorText: "90, 115, 65",
+  },
 ];
 
 app.set("view engine", "ejs");
@@ -59,16 +68,10 @@ const getRgb = async (image) => {
   image.colorText = colors[0]._rgb.slice(0, 3).join(", ");
 };
 
-// async arrow function
-const addRgbToImages = async (images) => {
-  // maps images array of objects adding the new properties to all of the objects
-  await Promise.all(images.map((image) => getRgb(image)));
-};
-
 // GET request to render "/home"
 app.get("/", (req, res) => {
   images = images.sort((a, b) => new Date(b.date) - new Date(a.date));
-  console.log(images)
+  console.log(images);
   res.render("home", {
     images /* only one attribute is needed if the key is the same as the value =>  images: images, */,
   });
@@ -94,8 +97,8 @@ app.post("/add-image-form", async (req, res) => {
     const { title, link, date, category } = req.body;
     // adds unique id to req.body object and assigns it to new image variable
     const newImage = { title, link, date, category, id: uuidv4() };
-    // passes the new image object to the addRgbToImages() function to get its RGB values
-    await addRgbToImages([newImage]);
+    // passes the new image object  to the async getRgb()function which gets the predominant color of the image
+    await getRgb(newImage);
     // pushes the new image object with added unique id to the database
     images.push(newImage);
 
@@ -112,9 +115,9 @@ app.post("/add-image-form", async (req, res) => {
 });
 
 // POST request to "/images/:id/delete" to delete image from database
-app.post('/images/:id/delete', (req, res) => {
-  images = images.filter((i) => i.id !== req.params.id); 
-  res.redirect('/')
+app.post("/images/:id/delete", (req, res) => {
+  images = images.filter((i) => i.id !== req.params.id);
+  res.redirect("/");
 });
 
 // GET request to search for image in database by title, and then display the filtered array
