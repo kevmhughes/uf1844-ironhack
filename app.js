@@ -108,14 +108,16 @@ app.get("/search", (req, res) => {
     (i) => i.title.toLowerCase().includes(searchQuery)
   );
   console.log("is it in the database", filteredImages);
-  console.log(req.query.title.toLowerCase());
   if (filteredImages.length == 0) {
     res.render("home", {
+      // Do I really need to render again??? 
+      // Maybe better to display a message such as => "no search results have been found."
       images: images,
     });
-  } else {
+  } else if (filteredImages.length > 0) {
     res.render("home", {
       images: filteredImages,
+      // modify message according to search results => Number of images in the gallery: 2
     });
   }
 });
