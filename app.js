@@ -93,9 +93,9 @@ app.post("/add-image-form", async (req, res) => {
     const { title, link, date, category } = req.body;
     // adds unique id to req.body object and assigns it to new image variable
     const newImage = { title, link, date, category, id: uuidv4() };
-    // passes the new image object to the addRgbToImages() function get its RGB values
+    // passes the new image object to the addRgbToImages() function to get its RGB values
     await addRgbToImages([newImage]);
-    // pushes the new image object to the database
+    // pushes the new image object with added unique id to the database
     images.push(newImage);
 
     res.render("form", {
