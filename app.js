@@ -2,6 +2,8 @@
 const express = require("express");
 const morgan = require("morgan");
 const getColors = require("get-image-colors");
+// third party NPM packet that creates unique ids
+const { v4: uuidv4 } = require("uuid");
 
 // create an express instance
 const app = express();
@@ -17,20 +19,31 @@ app.use(express.static("public"));
 // "database"
 let images = [
   {
-    title: "nok",
-    link: "https://imageio.forbes.com/specials-images/imageserve/5faad4255239c9448d6c7bcd/Best-Animal-Photos-Contest--Close-Up-Of-baby-monkey/960x0.jpg?format=jpg&width=960",
-    date: "2024-08-04",
+    title: "Dog",
+    link: "https://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQOO0X7mMnoYz-e9Zdc6Pe6Wz7Ow1DcvhEiaex5aSv6QJDoCtcooqA7UUbjrphvjlIc",
+    date: "2024-07-18",
     category: "animals",
-    color: "69 57 48",
-    colorText: "69, 57, 48",
+    id: "e55185c4-303d-49fc-a4d6-516797885b6f",
+    color: "171 145 96",
+    colorText: "171, 145, 96",
   },
   {
-    title: "124",
-    link: "https://thumbs.dreamstime.com/b/jaguar-watercolor-predator-animals-wildlife-wild-cat-leopard-design-t-shirt-107432074.jpg",
-    date: "2024-07-13",
+    title: "dog 2",
+    link: "https://cdn.britannica.com/79/232779-050-6B0411D7/German-Shepherd-dog-Alsatian.jpg",
+    date: "2024-07-20",
     category: "animals",
-    color: "233 226 219",
-    colorText: "233, 226, 219",
+    id: "f491d37d-bb71-4a20-93b8-d5f31d938f5c",
+    color: "176 190 123",
+    colorText: "176, 190, 123",
+  },
+  {
+    title: "Cat",
+    link: "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
+    date: "2024-08-02",
+    category: "animals",
+    id: "77493f20-284e-4082-ad8c-4d29c020f7f9",
+    color: "210 166 133",
+    colorText: "210, 166, 133",
   },
 ];
 
@@ -52,8 +65,9 @@ const addRgbToImages = async (images) => {
   await Promise.all(images.map((image) => getRgb(image)));
 };
 
+// GET request to render "/home"
 app.get("/", (req, res) => {
-  console.log("images => app.get(/)", images);
+  images = images.sort((a, b) => new Date(b.date) - new Date(a.date));
   res.render("home", {
     images /* only one attribute is needed if the key is the same as the value =>  images: images, */,
   });
@@ -69,17 +83,20 @@ app.get("/add-image-form", (req, res) => {
 
 // POST request to "/add-image-form"
 app.post("/add-image-form", async (req, res) => {
+  // URL of new image to be added
   const urltoBeUploaded = req.body.link;
+  // checks to see if RL of new image to be added is already in the database
   const isUrlInDatabase = images.find((i) => i.link == urltoBeUploaded);
 
   if (!isUrlInDatabase) {
-    images.push(req.body);
-    // Process the new image to get its RGB values
-    await addRgbToImages([req.body]);
-    console.log("req.body => app.post", [req.body]);
-
-    // sort images by date from most recent to oldest
-    images = images.sort((a, b) => new Date(b.date) - new Date(a.date));
+    // destructures req.body object
+    const { title, link, date, category } = req.body;
+    // adds unique id to req.body object and assigns it to new image variable
+    const newImage = { title, link, date, category, id: uuidv4() };
+    // passes the new image object to the addRgbToImages() function get its RGB values
+    await addRgbToImages([newImage]);
+    // pushes the new image object to the database
+    images.push(newImage);
 
     res.render("form", {
       isImagePosted: true,
@@ -104,6 +121,10 @@ app.delete("/images/:index", (req, res) => {
   }
 });
 
+app.post("/images/:id/delete", (req, res) => {
+  console.log("req params", req.params);
+});
+
 // GET request to search for image in database by title, and then display the filtered array
 app.get("/search", (req, res) => {
   const searchQuery = req.query.title;
@@ -115,7 +136,7 @@ app.get("/search", (req, res) => {
     res.render("home", {
       // Do I really need to render again???
       // Maybe better to display a message such as => "no search results have been found."
-      images: images,
+      images,
     });
   } else if (filteredImages.length > 0) {
     res.render("home", {

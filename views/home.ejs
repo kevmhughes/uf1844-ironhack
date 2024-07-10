@@ -7,7 +7,9 @@
   </head>
 
   <body>
-    <header class="container"><%- include("./partials/nav") %></header>
+    <header class="container"><%- include("./partials/nav") %>        <div class="search-form-container container">
+    </div>
+    </header>
 
     <main class="container">
       <% if (images.length == 0) { %>
@@ -16,6 +18,12 @@
         <a href="/add-image-form">Add one now.</a>
       </p>
       <% } else { %>
+        <div class="search-form-container container">
+          <form action="/search" method="get">
+            <input type="text" name="title" placeholder="search by title here ...">
+            <button type="submit">Search</button>
+          </form>
+        </div>
       <p class="add-image-message">
         Number of images in the gallery: <%= images.length %>
       </p>
@@ -24,9 +32,9 @@
       <section class="grid">
         <% images.forEach((i, index) => { %>
         <article class="image-container">
-          <header class="title">
+          <header class="image-title">
             <%= i.title.toUpperCase() %>
-            <button class="delete-button" onclick="deleteImage(<%= index %>)">
+            <button class="image-delete-button" onclick="deleteImage(<%= index %>)">
               x
             </button>
           </header>
@@ -36,10 +44,10 @@
               alt="An image with the following title: <%= i.title %>"
             />
           </div>
-          <div class="date"><%= i.date %></div>
-          <div class="category"><%= i.category %></div>
-          <div class="color-info-container">
-            <div class="rgb">rgb: <%= i.colorText %></div>
+          <div class="image-date"><%= i.date %></div>
+          <div class="image-category"><%= i.category %></div>
+          <div class="image-color-info-container">
+            <div class="image-rgb">rgb: <%= i.colorText %></div>
             <div
               class="color-box"
               style="background-color: rgb(<%= i.color %>)"

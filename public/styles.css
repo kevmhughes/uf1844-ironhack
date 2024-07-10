@@ -1,22 +1,43 @@
+.search-form-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .image-container {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-.title {
+.image-title {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.delete-button {
+img {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  object-fit: cover;
+}
+
+.image-div {
+  margin-bottom: 1rem;
+}
+
+.image-delete-button {
   background-color: transparent;
   color: #80808061;
   padding: 0 10px 2px 10px;
+/*   border: none; */
 }
 
-.color-info-container {
+/* .image-delete-button:focus {
+  border: none;
+} */
+
+
+.image-color-info-container {
   display: flex;
   justify-content: space-between;
 }
@@ -41,7 +62,6 @@
   background-color: #04aa6d;
   border-radius: 5px;
 }
-
 
 .alert.warning {
   background-color: red;
