@@ -68,6 +68,7 @@ const addRgbToImages = async (images) => {
 // GET request to render "/home"
 app.get("/", (req, res) => {
   images = images.sort((a, b) => new Date(b.date) - new Date(a.date));
+  console.log(images)
   res.render("home", {
     images /* only one attribute is needed if the key is the same as the value =>  images: images, */,
   });
@@ -110,19 +111,10 @@ app.post("/add-image-form", async (req, res) => {
   }
 });
 
-// DELETE request to remove a photo from array when "x" button is clicked
-app.delete("/images/:index", (req, res) => {
-  const index = parseInt(req.params.index, 10);
-  if (index >= 0 && index < images.length) {
-    images.splice(index, 1);
-    res.status(200).send("Image deleted");
-  } else {
-    res.status(400).send("Invalid index");
-  }
-});
-
-app.post("/images/:id/delete", (req, res) => {
-  console.log("req params", req.params);
+// POST request to "/images/:id/delete" to delete image from database
+app.post('/images/:id/delete', (req, res) => {
+  images = images.filter((i) => i.id !== req.params.id); 
+  res.redirect('/')
 });
 
 // GET request to search for image in database by title, and then display the filtered array
