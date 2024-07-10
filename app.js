@@ -15,9 +15,22 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 // "database"
-let images = [
-
-];
+let images = [  {
+  title: 'nok',
+  link: 'https://imageio.forbes.com/specials-images/imageserve/5faad4255239c9448d6c7bcd/Best-Animal-Photos-Contest--Close-Up-Of-baby-monkey/960x0.jpg?format=jpg&width=960',
+  date: '2024-08-04',
+  category: 'animals',
+  color: '69 57 48',
+  colorText: '69, 57, 48'
+},
+{
+  title: '124',
+  link: 'https://thumbs.dreamstime.com/b/jaguar-watercolor-predator-animals-wildlife-wild-cat-leopard-design-t-shirt-107432074.jpg',
+  date: '2024-07-13',
+  category: 'animals',
+  color: '233 226 219',
+  colorText: '233, 226, 219'
+}];
 
 app.set("view engine", "ejs");
 
@@ -38,9 +51,9 @@ const addRgbToImages = async (images) => {
 };
 
 app.get("/", (req, res) => {
-  console.log("images => app.get(/)", images)
+  console.log("images => app.get(/)", images);
   res.render("home", {
-    images, /* only one attribute is needed if the key is the same as the value =>  images: images, */
+    images /* only one attribute is needed if the key is the same as the value =>  images: images, */,
   });
 });
 
@@ -53,18 +66,18 @@ app.get("/add-image-form", (req, res) => {
 });
 
 // POST request to "/add-image-form"
-app.post("/add-image-form", async  (req, res) => {
+app.post("/add-image-form", async (req, res) => {
   const urltoBeUploaded = req.body.link;
   const isUrlInDatabase = images.find((i) => i.link == urltoBeUploaded);
 
   if (!isUrlInDatabase) {
     images.push(req.body);
-     // Process the new image to get its RGB values
+    // Process the new image to get its RGB values
     await addRgbToImages([req.body]);
-    console.log("req.body => app.post",[req.body])
+    console.log("req.body => app.post", [req.body]);
 
     // sort images by date from most recent to oldest
-    images = images.sort((a , b) => new Date(b.date) - new Date(a.date))
+    images = images.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     res.render("form", {
       isImagePosted: true,
@@ -79,13 +92,31 @@ app.post("/add-image-form", async  (req, res) => {
 });
 
 // DELETE request to remove a photo from array when "x" button is clicked
-app.delete('/images/:index', (req, res) => {
+app.delete("/images/:index", (req, res) => {
   const index = parseInt(req.params.index, 10);
   if (index >= 0 && index < images.length) {
-      images.splice(index, 1);
-      res.status(200).send('Image deleted');
+    images.splice(index, 1);
+    res.status(200).send("Image deleted");
   } else {
-      res.status(400).send('Invalid index');
+    res.status(400).send("Invalid index");
+  }
+});
+
+app.get("/search", (req, res) => {
+  const searchQuery = req.query.title;
+  const filteredImages = images.filter(
+    (i) => i.title.toLowerCase().includes(searchQuery)
+  );
+  console.log("is it in the database", filteredImages);
+  console.log(req.query.title.toLowerCase());
+  if (filteredImages.length == 0) {
+    res.render("home", {
+      images: images,
+    });
+  } else {
+    res.render("home", {
+      images: filteredImages,
+    });
   }
 });
 
