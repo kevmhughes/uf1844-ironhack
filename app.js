@@ -87,22 +87,17 @@ app.get("/add-image-form", (req, res) => {
 });
 
 app.post("/add-image-form", async (req, res) => {
-  // URL of new image to be added
   const urltoBeUploaded = req.body.link;
-  // checks to see if RL of new image to be added is already in the database
   const isUrlInDatabase = images.find((i) => i.link == urltoBeUploaded);
 
   if (!isUrlInDatabase) {
     // destructures req.body object
     const { title, link, date, category } = req.body;
-    console.log("check req.body", req.body);
     // creates a unique id
     const uniqueId = uuidv4();
     // adds unique id to req.body object and assigns it to new image variable
     const newImage = { title, link, date, category, id: uniqueId };
-    // passes the new image object to the async getRgb() function, which gets the predominant color of the image
     await getRgb(newImage);
-    // pushes the new image object with added unique id to the database
     images.push(newImage);
 
     res.render("form", {
@@ -127,16 +122,11 @@ app.get("/add-category", (req, res) => {
 });
 
 app.post("/add-category", (req, res) => {
-  /* const categoryAlreadyAdded = categories.find() */
-  console.log(req.body.category);
   const categoryFoundinDatabase = categories.find(
     (c) => c == req.body.category
   );
-
-  // !!!! ======> check to see if the category already exist in the category array
-  // !!!! ======> if it exists, send message "this category already exists"
-  // !!!! ======> if it doesn't exist, send message "category has been successfully added"
   const categoryToBeAdded = req.body.category.toLowerCase();
+
   if (!categoryFoundinDatabase) {
     categories.push(categoryToBeAdded);
     res.render("category", {
@@ -165,7 +155,7 @@ app.get("/search", (req, res) => {
   if (filteredImages.length == 0) {
     res.render("home", {
       messageToBeSent: true,
-      images: [], // Send an empty array given that there are zero results
+      images: [], // Send an empty array when there are zero results
     });
   } else if (filteredImages.length > 0) {
     res.render("home", {
