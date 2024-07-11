@@ -4,6 +4,21 @@
   gap: 10px;
 }
 
+.link-not-decorated {
+  color: inherit; /* Use the same color as the surrounding text */
+  text-decoration: none; 
+}
+
+.link-not-decorated :visited {
+  color: inherit; /* Use the same color as the surrounding text for visited links */
+}
+
+.link-not-decorated :hover,
+.link-not-decorated :active {
+  color: inherit; /* Use the same color as the surrounding text on hover and active */
+  text-decoration: none; 
+}
+
 .search-form-container {
   display: flex;
   justify-content: flex-end;

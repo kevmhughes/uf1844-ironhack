@@ -56,6 +56,10 @@ let images = [
   },
 ];
 
+let categories = [
+  "animals", "landscapes", "cars"
+]
+
 app.set("view engine", "ejs");
 
 // async function that gets predominant color of an image, and then adds new properties
@@ -82,6 +86,7 @@ app.get("/add-image-form", (req, res) => {
   res.render("form", {
     isImagePosted: undefined,
     imageAlreadyAdded: undefined,
+    categories
   });
 });
 
@@ -95,6 +100,7 @@ app.post("/add-image-form", async (req, res) => {
   if (!isUrlInDatabase) {
     // destructures req.body object
     const { title, link, date, category } = req.body;
+    console.log("check req.body", req.body)
     // creates a unique id
     const uniqueId = uuidv4()
     // adds unique id to req.body object and assigns it to new image variable
@@ -107,14 +113,29 @@ app.post("/add-image-form", async (req, res) => {
     res.render("form", {
       isImagePosted: true,
       imageAlreadyAdded: false,
+      categories
     });
   } else {
     res.render("form", {
       isImagePosted: false,
       imageAlreadyAdded: true,
+      categories
     });
   }
 });
+
+app.get("/add-category", (req, res) => {
+  res.render("category");
+});
+
+app.post("/add-category", (req, res) => {
+  // !!!! ======> check to see if the category already exist in the category array
+  // !!!! ======> if it exists, send message "this category already exists"
+  // !!!! ======> if it doesn't exist, send message "category has been successfully added"
+  const categoryToBeAdded = req.body.category.toLowerCase()
+  categories.push(categoryToBeAdded)
+});
+
 
 // POST request to "/images/:id/delete" to delete image from database
 app.post("/images/:id/delete", (req, res) => {
@@ -131,8 +152,8 @@ app.get("/search", (req, res) => {
   console.log("is it in the database", filteredImages);
   if (filteredImages.length == 0) {
     res.render("home", {
-      // Do I really need to render again???
-      // Maybe better to display a message such as => "no search results have been found."
+      // !!!! ======> Do I really need to render again???
+      // !!!! ======> Maybe better to display a message such as => "no search results have been found."
       images,
     });
   } else if (filteredImages.length > 0) {
