@@ -2,8 +2,8 @@
 <html lang="en" data-theme="dark">
   <head>
     <title>Image Gallery - IronHack 2024</title>
+    <!-- template partial -->
     <%- include("./partials/head") %>
-    <script src="home.js"></script>
   </head>
 
   <body>
@@ -14,7 +14,7 @@
   </ul>
   <li class="mobile-view" style="padding-right: 0;">
     <details class="dropdown">
-      <summary>Menu</i>
+      <summary>Options</i>
       </summary>
       <ul dir="rtl">
         <li><a href="/">Show Images</a></li>
@@ -48,12 +48,25 @@
     </header>
 
     <main class="container main-container">
-      <% if (images.length == 0) { %>
+      <% if (images.length == 0 && messageToBeSent == undefined ) { %>
       <p class="add-image-message">
         There are no images in the gallery at the moment.
-        <a href="/add-image-form">Add one now.</a>
       </p>
-      <% } else { %>
+      <p class="add-image-message">
+        <a href="/add-image-form">Add an image now.</a>
+      </p>
+      <% } else if (images.length == 0 && messageToBeSent == true ) { %>
+        <p class="add-image-message">
+          There are no images in the gallery with that title. 
+        </p>
+        <p class="no-image-message">
+          <a href="/">Go back</a> to the gallery or search again.
+        </p>
+        <% } else if (images.length > 0 && messageToBeSent == true ) { %>
+          <p class="add-image-message">
+            Number of returned search results: <%= images.length %>
+          </p>
+          <% }else { %>
       <div class="search-form-container container mobile-view">
         <div class="form-mobile-view">
           <form action="/search" method="get">

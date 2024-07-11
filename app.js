@@ -1,20 +1,17 @@
-// import third party modules
+// import necessary modules
 const express = require("express");
 const morgan = require("morgan");
 const getColors = require("get-image-colors");
-// third party NPM packet that creates unique ids
 const { v4: uuidv4 } = require("uuid");
 
-// create an express instance
+// create express instance
 const app = express();
 const port = 3000;
 
-//middleware to log all client requests
-app.use(morgan("tiny"));
-// middleware to process POST requests
-app.use(express.urlencoded({ extended: true }));
-// middleware so the client can make GET requests to the static resources in the public folder
-app.use(express.static("public"));
+//middleware setup
+app.use(morgan("tiny")); // logging requests
+app.use(express.urlencoded({ extended: true })); // parsing form data
+app.use(express.static("public")); // serving static files
 
 // "database"
 let images = [
@@ -58,9 +55,10 @@ let images = [
 
 let categories = ["animals", "landscapes", "cars"];
 
+// set view engine
 app.set("view engine", "ejs");
 
-// async function that gets predominant color of an image, and then adds new properties
+// function to get predominant color of an image asynchronously
 const getRgb = async (image) => {
   // gets (one) predominant color using the image URL
   const colors = await getColors(image.link, { count: 1 });
@@ -70,16 +68,16 @@ const getRgb = async (image) => {
   image.colorText = colors[0]._rgb.slice(0, 3).join(", ");
 };
 
-// GET request to render "/home"
+// Routes
 app.get("/", (req, res) => {
   images = images.sort((a, b) => new Date(b.date) - new Date(a.date));
   console.log(images);
   res.render("home", {
+    messageToBeSent: undefined,
     images /* only one attribute is needed if the key is the same as the value => images: images, */,
   });
 });
 
-// GET request to render "/add-image-form"
 app.get("/add-image-form", (req, res) => {
   res.render("form", {
     isImagePosted: undefined,
@@ -88,7 +86,6 @@ app.get("/add-image-form", (req, res) => {
   });
 });
 
-// POST request to "/add-image-form"
 app.post("/add-image-form", async (req, res) => {
   // URL of new image to be added
   const urltoBeUploaded = req.body.link;
@@ -154,13 +151,11 @@ app.post("/add-category", (req, res) => {
   }
 });
 
-// POST request to "/images/:id/delete" to delete image from database
 app.post("/images/:id/delete", (req, res) => {
   images = images.filter((i) => i.id !== req.params.id);
   res.redirect("/");
 });
 
-// GET request to search for image in database by title, and then display the filtered array
 app.get("/search", (req, res) => {
   const searchQuery = req.query.title;
   const filteredImages = images.filter((i) =>
@@ -169,18 +164,18 @@ app.get("/search", (req, res) => {
   console.log("is it in the database", filteredImages);
   if (filteredImages.length == 0) {
     res.render("home", {
-      // !!!! ======> Do I really need to render again???
-      // !!!! ======> Maybe better to display a message such as => "no search results have been found."
-      images,
+      messageToBeSent: true,
+      images: [], // Send an empty array given that there are zero results
     });
   } else if (filteredImages.length > 0) {
     res.render("home", {
       images: filteredImages,
-      // modify message according to search results => Number of images in the gallery: 2
+      messageToBeSent: true,
     });
   }
 });
 
+// start server
 app.listen(port, (req, res) => {
   console.log(`The server is running on port ${port}`);
 });

@@ -3,10 +3,12 @@
   <head>
     <title>Add New Image</title>
     <script defer src="form.js"></script>
+    <!-- template partial -->
     <%- include("./partials/head") %>
   </head>
 
   <body>
+    <!-- template partial -->
     <header class="container"><%- include("./partials/nav") %></header>
 
     <form class="container" action="/add-image-form" method="post">
@@ -16,7 +18,7 @@
         name="title"
         id="title"
         maxlength="30"
-        pattern="^[\p{L}\p{M}\d\s_-]+$"
+        pattern="^[A-Za-z0-9 \-_]+$"
         title="The title must contain 1-30 characters, and can only contain letters, numbers, spaces, and underscores."
         required
       />
@@ -28,21 +30,20 @@
       <select name="category" required>
         <option selected disabled value="">Choose a category</option>
         <% categories.forEach((c) => { %>
-        <option><%= c %></option>
+        <option value="<%= c %>"><%= c %></option>
         <% }); %>
       </select>
       <input type="submit" value="Add Image" />
-    </form>
 
-    <% if (isImagePosted) { %>
-    <div id="message" class="container alert success">
-      Image added to gallery correctly.
-    </div>
-    <% } %> <% if (imageAlreadyAdded) { %>
-    <div id="already-message" class="container alert warning">
-      This image is already in the database.
-    </div>
-    <% } %>
+      <% if (isImagePosted) { %>
+      <div id="message" class="container alert success">
+        Image added to gallery correctly
+      </div>
+      <% } %> <% if (imageAlreadyAdded) { %>
+      <div id="already-message" class="container alert warning">
+        This image is already in the database
+      </div>
+      <% } %>
+    </form>
   </body>
-  
 </html>

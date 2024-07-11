@@ -35,7 +35,6 @@
 
 .search-form-li-not-mobile-view {
   display: flex;
-  padding: 0;
   padding: 20px 0 20px 10px;
 }
 
@@ -55,7 +54,8 @@
   padding: 0 20px;
 }
 
-.add-image-message {
+.add-image-message,
+.no-image-message {
   color: #8891A3;
 }
 
@@ -116,11 +116,15 @@ img {
 .alert.success {
   background-color: #04aa6d;
   border-radius: 5px;
+  display: flex;
+  justify-content: center;
 }
 
 .alert.warning {
   background-color: red;
   border-radius: 5px;
+  display: flex;
+  justify-content: center;
 }
 
 @media (max-width: 768px) {

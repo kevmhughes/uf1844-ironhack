@@ -3,10 +3,12 @@
   <head>
     <title>Add New Category</title>
     <script defer src="category.js"></script>
+    <!-- template partial -->
     <%- include("./partials/head") %>
   </head>
 
   <body>
+    <!-- template partial -->
     <header class="container"><%- include("./partials/nav") %></header>
 
     <form class="container" action="/add-category" method="post">
@@ -21,19 +23,16 @@
         required
       />
       <input type="submit" value="Add Category" />
-    </form>
 
-    <% if (isCategoryAdded) { %>
+      <% if (isCategoryAdded) { %>
       <div id="category-message" class="container alert success">
-        Category added correctly.
+        Category added correctly
       </div>
       <% } %> <% if (categoryAlreadyAdded) { %>
       <div id="category-already-message" class="container alert warning">
-        This category already exists.
+        That category already exists
       </div>
       <% } %>
-
+    </form>
   </body>
-
 </html>
-
