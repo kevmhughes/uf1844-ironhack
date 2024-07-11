@@ -12,22 +12,24 @@
       <div class="search-form-container container"></div>
     </header>
 
-    <main class="container">
+    <main class="container main-container">
       <% if (images.length == 0) { %>
       <p class="add-image-message">
         There are no images in the gallery at the moment.
         <a href="/add-image-form">Add one now.</a>
       </p>
       <% } else { %>
-      <div class="search-form-container container">
-        <form action="/search" method="get">
-          <input
-            type="text"
-            name="title"
-            placeholder="search by title here ..."
-          />
-          <button type="submit">Search</button>
-        </form>
+      <div class="search-form-container container mobile-view">
+        <div class="form-mobile-view">
+          <form action="/search" method="get">
+            <input
+              type="text"
+              name="title"
+              placeholder="search by title here ..."
+            />
+            <button type="submit">Search</button>
+          </form>
+        </div>
       </div>
       <p class="add-image-message">
         Number of images in the gallery: <%= images.length %>

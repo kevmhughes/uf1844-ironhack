@@ -58,9 +58,9 @@ let images = [
 
 app.set("view engine", "ejs");
 
-// async function that gets average color of an image, and then adds new properties
+// async function that gets predominant color of an image, and then adds new properties
 const getRgb = async (image) => {
-  // gets average color using the URL
+  // gets (one) predominant color using the image URL
   const colors = await getColors(image.link, { count: 1 });
   // adds property with key "color" and value "rgb" (taken from get-image-colors array)
   image.color = colors[0]._rgb.slice(0, 3).join(" ");
@@ -73,7 +73,7 @@ app.get("/", (req, res) => {
   images = images.sort((a, b) => new Date(b.date) - new Date(a.date));
   console.log(images);
   res.render("home", {
-    images /* only one attribute is needed if the key is the same as the value =>  images: images, */,
+    images /* only one attribute is needed if the key is the same as the value => images: images, */,
   });
 });
 
@@ -95,9 +95,11 @@ app.post("/add-image-form", async (req, res) => {
   if (!isUrlInDatabase) {
     // destructures req.body object
     const { title, link, date, category } = req.body;
+    // creates a unique id
+    const uniqueId = uuidv4()
     // adds unique id to req.body object and assigns it to new image variable
-    const newImage = { title, link, date, category, id: uuidv4() };
-    // passes the new image object  to the async getRgb()function which gets the predominant color of the image
+    const newImage = { title, link, date, category, id: uniqueId };
+    // passes the new image object to the async getRgb() function, which gets the predominant color of the image
     await getRgb(newImage);
     // pushes the new image object with added unique id to the database
     images.push(newImage);
