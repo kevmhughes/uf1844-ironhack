@@ -2,6 +2,7 @@
 <html lang="en" data-theme="dark">
   <head>
     <title>Add New Category</title>
+    <script defer src="category.js"></script>
     <%- include("./partials/head") %>
   </head>
 
@@ -21,5 +22,18 @@
       />
       <input type="submit" value="Add Category" />
     </form>
+
+    <% if (isCategoryAdded) { %>
+      <div id="category-message" class="container alert success">
+        Category added correctly.
+      </div>
+      <% } %> <% if (categoryAlreadyAdded) { %>
+      <div id="category-already-message" class="container alert warning">
+        This category already exists.
+      </div>
+      <% } %>
+
   </body>
+
 </html>
+

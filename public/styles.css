@@ -145,6 +145,9 @@ img {
   .grid {
     grid-template-columns: repeat(3, 1fr);
   }
+  nav {
+    width: calc(100% - 10px);
+  }
 }
 
 @media (max-width: 1050px) {

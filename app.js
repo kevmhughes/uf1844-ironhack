@@ -56,9 +56,7 @@ let images = [
   },
 ];
 
-let categories = [
-  "animals", "landscapes", "cars"
-]
+let categories = ["animals", "landscapes", "cars"];
 
 app.set("view engine", "ejs");
 
@@ -86,7 +84,7 @@ app.get("/add-image-form", (req, res) => {
   res.render("form", {
     isImagePosted: undefined,
     imageAlreadyAdded: undefined,
-    categories
+    categories,
   });
 });
 
@@ -100,9 +98,9 @@ app.post("/add-image-form", async (req, res) => {
   if (!isUrlInDatabase) {
     // destructures req.body object
     const { title, link, date, category } = req.body;
-    console.log("check req.body", req.body)
+    console.log("check req.body", req.body);
     // creates a unique id
-    const uniqueId = uuidv4()
+    const uniqueId = uuidv4();
     // adds unique id to req.body object and assigns it to new image variable
     const newImage = { title, link, date, category, id: uniqueId };
     // passes the new image object to the async getRgb() function, which gets the predominant color of the image
@@ -113,29 +111,48 @@ app.post("/add-image-form", async (req, res) => {
     res.render("form", {
       isImagePosted: true,
       imageAlreadyAdded: false,
-      categories
+      categories,
     });
   } else {
     res.render("form", {
       isImagePosted: false,
       imageAlreadyAdded: true,
-      categories
+      categories,
     });
   }
 });
 
 app.get("/add-category", (req, res) => {
-  res.render("category");
+  res.render("category", {
+    isCategoryAdded: undefined,
+    categoryAlreadyAdded: undefined
+  });
 });
 
 app.post("/add-category", (req, res) => {
+  /* const categoryAlreadyAdded = categories.find() */
+  console.log(req.body.category);
+  const categoryFoundinDatabase = categories.find(
+    (c) => c == req.body.category
+  );
+
   // !!!! ======> check to see if the category already exist in the category array
   // !!!! ======> if it exists, send message "this category already exists"
   // !!!! ======> if it doesn't exist, send message "category has been successfully added"
-  const categoryToBeAdded = req.body.category.toLowerCase()
-  categories.push(categoryToBeAdded)
+  const categoryToBeAdded = req.body.category.toLowerCase();
+  if (!categoryFoundinDatabase) {
+    categories.push(categoryToBeAdded);
+    res.render("category", {
+      isCategoryAdded: true,
+      categoryAlreadyAdded: false,
+    });
+  } else {
+    res.render("category", {
+      isCategoryAdded: false,
+      categoryAlreadyAdded: true,
+    });
+  }
 });
-
 
 // POST request to "/images/:id/delete" to delete image from database
 app.post("/images/:id/delete", (req, res) => {
