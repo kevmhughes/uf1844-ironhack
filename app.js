@@ -6,7 +6,7 @@ const { v4: uuidv4 } = require("uuid");
 
 // create express instance
 const app = express();
-const port = 3000;
+const PORT = process.env.PORT || 3000;
 
 //middleware setup
 app.use(morgan("tiny")); // logging requests
@@ -163,6 +163,6 @@ app.get("/search", (req, res) => {
 });
 
 // start server
-app.listen(port, (req, res) => {
-  console.log(`The server is running on port ${port}`);
+app.listen(PORT, (req, res) => {
+  console.log(`The server is running on port ${PORT}`);
 });
