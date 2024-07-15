@@ -18,8 +18,8 @@
         name="category"
         id="category"
         maxlength="15"
-        pattern="[a-zA-ZÀ-ÿ\s]+"
-        title="The title must contain 1-12 characters, and it can only contain letters."
+        pattern="^[A-Za-z \-]+$"
+        title="The category name must contain 1-12 characters, and it can only contain letters, spaces and hyphens."
         required
       />
       <input type="submit" value="Add Category" />

@@ -25,7 +25,7 @@ let images = [
     colorText: "171, 145, 96",
   },
   {
-    title: "dog 2",
+    title: "Canine",
     link: "https://cdn.britannica.com/79/232779-050-6B0411D7/German-Shepherd-dog-Alsatian.jpg",
     date: "2024-07-20",
     category: "animals",
@@ -70,8 +70,8 @@ const getRgb = async (image) => {
 
 // Routes
 app.get("/", (req, res) => {
-  images = images.sort((a, b) => new Date(b.date) - new Date(a.date));
-  console.log(images);
+  images.sort((a, b) => new Date(b.date) - new Date(a.date));
+  console.log(images)
   res.render("home", {
     messageToBeSent: undefined,
     images /* only one attribute is needed if the key is the same as the value => images: images, */,
@@ -91,12 +91,10 @@ app.post("/add-image-form", async (req, res) => {
   const isUrlInDatabase = images.find((i) => i.link == urltoBeUploaded);
 
   if (!isUrlInDatabase) {
-    // destructures req.body object
-    const { title, link, date, category } = req.body;
     // creates a unique id
     const uniqueId = uuidv4();
     // adds unique id to req.body object and assigns it to new image variable
-    const newImage = { title, link, date, category, id: uniqueId };
+    const newImage = { ...req.body, id: uniqueId };
     await getRgb(newImage);
     images.push(newImage);
 
@@ -151,7 +149,6 @@ app.get("/search", (req, res) => {
   const filteredImages = images.filter((i) =>
     i.title.toLowerCase().includes(searchQuery)
   );
-  console.log("is it in the database", filteredImages);
   if (filteredImages.length == 0) {
     res.render("home", {
       messageToBeSent: true,
