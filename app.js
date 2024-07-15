@@ -148,7 +148,6 @@ app.get("/search", (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
 
   const searchQuery = req.query.title;
-  console.log("Received search query:", searchQuery);
 
   if (!searchQuery || searchQuery.trim() === "") {
     console.log("Search query is empty or undefined");
@@ -161,8 +160,6 @@ app.get("/search", (req, res) => {
   const filteredImages = images.filter((i) =>
     i.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
-  console.log("Filtered Images:", filteredImages);
 
   if (filteredImages.length === 0) {
     res.render("home", {
