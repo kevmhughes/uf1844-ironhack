@@ -43,6 +43,10 @@
       <div id="already-message" class="container alert warning">
         This image is already in the database
       </div>
+      <% } %> <% if (errorMessage) { %>
+      <div id="error-message" class="container alert warning">
+        Use a URL for GIF, JPG, PNG and SVG formats only
+      </div>
       <% } %>
     </form>
   </body>

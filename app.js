@@ -6,6 +6,8 @@ const { v4: uuidv4 } = require("uuid");
 
 // create express instance
 const app = express();
+
+// defines port: 3000 for dev; process.env.PORT for deployed app
 const PORT = process.env.PORT || 3000;
 
 //middleware setup
@@ -68,10 +70,10 @@ const getRgb = async (image) => {
   image.colorText = colors[0]._rgb.slice(0, 3).join(", ");
 };
 
-// Routes
+// routes
 app.get("/", (req, res) => {
   images.sort((a, b) => new Date(b.date) - new Date(a.date));
-  console.log(images)
+  console.log(images);
   res.render("home", {
     messageToBeSent: undefined,
     images /* only one attribute is needed if the key is the same as the value => images: images, */,
@@ -82,6 +84,7 @@ app.get("/add-image-form", (req, res) => {
   res.render("form", {
     isImagePosted: undefined,
     imageAlreadyAdded: undefined,
+    errorMessage: undefined,
     categories,
   });
 });
@@ -91,22 +94,34 @@ app.post("/add-image-form", async (req, res) => {
   const isUrlInDatabase = images.find((i) => i.link == urltoBeUploaded);
 
   if (!isUrlInDatabase) {
-    // creates a unique id
-    const uniqueId = uuidv4();
-    // adds unique id to req.body object and assigns it to new image variable
-    const newImage = { ...req.body, id: uniqueId };
-    await getRgb(newImage);
-    images.push(newImage);
+    try {
+      // creates a unique id
+      const uniqueId = uuidv4();
+      // adds unique id to req.body object and assigns it to new image variable
+      const newImage = { ...req.body, id: uniqueId };
+      await getRgb(newImage);
+      images.push(newImage);
 
-    res.render("form", {
-      isImagePosted: true,
-      imageAlreadyAdded: false,
-      categories,
-    });
+      res.render("form", {
+        isImagePosted: true,
+        imageAlreadyAdded: false,
+        errorMessage: false,
+        categories,
+      });
+    } catch (error) {
+      console.error(error);
+      res.render("form", {
+        isImagePosted: false,
+        imageAlreadyAdded: false,
+        errorMessage: true,
+        categories,
+      })
+    }
   } else {
     res.render("form", {
       isImagePosted: false,
       imageAlreadyAdded: true,
+      errorMessage: false,
       categories,
     });
   }
@@ -115,7 +130,7 @@ app.post("/add-image-form", async (req, res) => {
 app.get("/add-category", (req, res) => {
   res.render("category", {
     isCategoryAdded: undefined,
-    categoryAlreadyAdded: undefined
+    categoryAlreadyAdded: undefined,
   });
 });
 
@@ -145,12 +160,11 @@ app.post("/images/:id/delete", (req, res) => {
 });
 
 app.get("/search", (req, res) => {
-  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader("Cache-Control", "no-store");
 
   const searchQuery = req.query.title;
 
   if (!searchQuery || searchQuery.trim() === "") {
-    console.log("Search query is empty or undefined");
     return res.render("home", {
       messageToBeSent: true,
       images: [],
