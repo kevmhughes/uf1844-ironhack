@@ -134,6 +134,13 @@ img {
   .main-container {
     padding-top: 0;
   }
+  .color-box {
+    height: 25px;
+    width: 25px;
+}
+.image-color-info-container {
+  align-items: flex-end;
+}
 }
 
 @media (min-width: 768px) {
