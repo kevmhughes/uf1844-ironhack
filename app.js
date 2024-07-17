@@ -18,40 +18,58 @@ app.use(express.static("public")); // serving static files
 // "database"
 let images = [
   {
-    title: "Dog",
-    link: "https://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQOO0X7mMnoYz-e9Zdc6Pe6Wz7Ow1DcvhEiaex5aSv6QJDoCtcooqA7UUbjrphvjlIc",
-    date: "2024-07-18",
+    title: "Mediterranean Tree Frog",
+    link: "https://i.imgur.com/TsNgISr.jpeg",
+    date: "2024-06-28",
     category: "animals",
-    id: "e55185c4-303d-49fc-a4d6-516797885b6f",
-    color: "171 145 96",
-    colorText: "171, 145, 96",
+    id: "ef14a51c-8119-488e-97c2-4016302524ed",
+    color: "44 59 18",
+    colorText: "44, 59, 18",
   },
   {
-    title: "Canine",
-    link: "https://cdn.britannica.com/79/232779-050-6B0411D7/German-Shepherd-dog-Alsatian.jpg",
-    date: "2024-07-20",
-    category: "animals",
-    id: "f491d37d-bb71-4a20-93b8-d5f31d938f5c",
-    color: "176 190 123",
-    colorText: "176, 190, 123",
+    title: "Sunset Over Tornabous",
+    link: "https://i.imgur.com/5Q9vSnX.jpg",
+    date: "2024-05-24",
+    category: "landscapes",
+    id: "62be796f-9b06-4e08-9353-14027bbc4cd2",
+    color: "198 79 10",
+    colorText: "198, 79, 10",
   },
   {
-    title: "Cat",
-    link: "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
-    date: "2024-08-02",
+    title: "Cattle Egret",
+    link: "https://i.imgur.com/Ikhvo1F.jpeg",
+    date: "2024-07-04",
     category: "animals",
-    id: "77493f20-284e-4082-ad8c-4d29c020f7f9",
-    color: "210 166 133",
-    colorText: "210, 166, 133",
+    id: "16c1a727-128a-461b-b4cc-a55623a629dc",
+    color: "72 112 37",
+    colorText: "72, 112, 37",
   },
   {
-    title: "Bird",
-    link: "https://i.natgeofe.com/k/520e971d-7a22-4a6f-90dc-258df74e45bc/american-goldfinch_3x2.jpg",
-    date: "2024-08-01",
+    title: "Genet",
+    link: "https://i.imgur.com/lULnb1J.jpeg",
+    date: "2024-07-26",
     category: "animals",
-    id: "6da8589a-99cb-46d1-b909-87f09f856de2",
-    color: "90 115 65",
-    colorText: "90, 115, 65",
+    id: "77a01781-ca8f-4696-b5d7-dcecb7fb3aec",
+    color: "25 24 23",
+    colorText: "25, 24, 23",
+  },
+  {
+    title: "Alpine Marmot",
+    link: "https://i.imgur.com/JNsz2g3.jpeg",
+    date: "2024-07-01",
+    category: "animals",
+    id: "dfed91bf-565a-4380-8591-1fa005a6fb73",
+    color: "120 132 78",
+    colorText: "120, 132, 78",
+  },
+  {
+    title: 'Common Darter',
+    link: 'https://i.imgur.com/RJNKZaS.jpeg',
+    date: '2024-07-02',
+    category: 'animals',
+    id: '7ab38132-02eb-4b68-b3f8-184522230f9c',
+    color: '45 96 10',
+    colorText: '45, 96, 10'
   },
 ];
 
@@ -73,6 +91,7 @@ const getRgb = async (image) => {
 // routes
 app.get("/", (req, res) => {
   images.sort((a, b) => new Date(b.date) - new Date(a.date));
+  console.log(images);
   res.render("home", {
     messageToBeSent: undefined,
     images /* only one attribute is needed if the key is the same as the value => images: images, */,
@@ -113,7 +132,7 @@ app.post("/add-image-form", async (req, res) => {
         imageAlreadyAdded: false,
         errorMessage: true,
         categories,
-      })
+      });
     }
   } else {
     res.status(400).render("form", {
