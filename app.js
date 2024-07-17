@@ -145,7 +145,7 @@ app.post("/add-category", (req, res) => {
       categoryAlreadyAdded: false,
     });
   } else {
-    res.render("category", {
+    res.status(400).render("category", {
       isCategoryAdded: false,
       categoryAlreadyAdded: true,
     });
