@@ -73,7 +73,6 @@ const getRgb = async (image) => {
 // routes
 app.get("/", (req, res) => {
   images.sort((a, b) => new Date(b.date) - new Date(a.date));
-  console.log(images);
   res.render("home", {
     messageToBeSent: undefined,
     images /* only one attribute is needed if the key is the same as the value => images: images, */,
@@ -109,8 +108,7 @@ app.post("/add-image-form", async (req, res) => {
         categories,
       });
     } catch (error) {
-      console.error(error);
-      res.render("form", {
+      res.status(500).render("form", {
         isImagePosted: false,
         imageAlreadyAdded: false,
         errorMessage: true,
@@ -118,7 +116,7 @@ app.post("/add-image-form", async (req, res) => {
       })
     }
   } else {
-    res.render("form", {
+    res.status(400).render("form", {
       isImagePosted: false,
       imageAlreadyAdded: true,
       errorMessage: false,
@@ -165,7 +163,7 @@ app.get("/search", (req, res) => {
   const searchQuery = req.query.title;
 
   if (!searchQuery || searchQuery.trim() === "") {
-    return res.render("home", {
+    return res.status(400).render("home", {
       messageToBeSent: true,
       images: [],
     });
