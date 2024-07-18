@@ -45,7 +45,7 @@ let images = [
     colorText: "72, 112, 37",
   },
   {
-    title: "Genet",
+    title: "Jumping Genet",
     link: "https://i.imgur.com/lULnb1J.jpeg",
     date: "2024-07-26",
     category: "animals",
