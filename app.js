@@ -45,15 +45,6 @@ let images = [
     colorText: "72, 112, 37",
   },
   {
-    title: "Jumping Genet",
-    link: "https://i.imgur.com/lULnb1J.jpeg",
-    date: "2024-07-26",
-    category: "animals",
-    id: "77a01781-ca8f-4696-b5d7-dcecb7fb3aec",
-    color: "25 24 23",
-    colorText: "25, 24, 23",
-  },
-  {
     title: "Alpine Marmot",
     link: "https://i.imgur.com/JNsz2g3.jpeg",
     date: "2024-07-01",
