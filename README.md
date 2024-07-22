@@ -8,9 +8,6 @@ Welcome to the UF1844: Desarrollo de Aplicaciones Web en el Entorno Servidor rep
 - [Installation](#installation)
 - [Usage](#usage)
 - [Project Structure](#project-structure)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
 
 ## Overview
 
