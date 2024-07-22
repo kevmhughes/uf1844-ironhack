@@ -2,7 +2,7 @@
 
 This fully responsive image gallery app, serving as the evaluated project for the UF1844 module is part of the Ironhack Bootcamp and the encompassing IFCD0210 Professional Certificate.
 
-Use the app [here]([https://flowerheads-ecom-app.vercel.app](https://uf1844-ironhack.onrender.com/))
+Use the app [here](https://flowerheads-ecom-app.vercel.app](https://uf1844-ironhack.onrender.com/)
 
 ## Overview
 
