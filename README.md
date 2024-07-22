@@ -28,10 +28,10 @@ This will start the server, and you can navigate to [http://localhost:3000](http
 
 Here's an overview of the main directories and files in this repository:
 
-- `public/`: Static files
-- `app.js/`: Includes Express routes for handling HTTP requests, Javascript for data processing and client-side logic.
+- `public/`: static files
+- `app.js/`: includes Express routes for handling HTTP requests, Javascript for data processing and client-side logic.
 - `views/`: EJS templates for rendering HTML.
-- `package.json`: List of dependencies and scripts required to run the code.
+- `package.json`: list of dependencies and scripts required to run the code.
 
 ## Tools Used
 
