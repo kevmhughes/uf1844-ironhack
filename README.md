@@ -55,8 +55,8 @@ Here's an overview of the main directories and files in this repository:
 ### Users are able to:
 
 * add images to the gallery
-* add image category
-* filter through images by title, keywords. 
-* delete image
+* add image categories
+* filter through the images in the gallery by title or keywords. 
+* delete images from the gallery
 
 
