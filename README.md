@@ -1,17 +1,10 @@
 # UF1844: Desarrollo de Aplicaciones Web en el Entorno Servidor
 
-Welcome to the UF1844: Desarrollo de Aplicaciones Web en el Entorno Servidor repository! This project is part of the Ironhack Bootcamp and is associated with the professional certificate IFCD0210.
-
-## Table of Contents
-
-- [Overview](#overview)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Project Structure](#project-structure)
+Welcome to the UF1844: Desarrollo de Aplicaciones Web en el Entorno Servidor repository! This project is part of the Ironhack Bootcamp and the encompassing Spanish professional certificate, IFCD0210.
 
 ## Overview
 
-The UF1844 module focuses on the development of web applications in the server environment using JavaScript and EJS templates. It covers essential topics such as server-side programming, database integration, and web application deployment. This repository includes various exercises, projects, and resources that were used throughout the module as part of the Ironhack Bootcamp for the professional certificate IFCD0210.
+The UF1844 module focuses on the development of web applications in the server environment using JavaScript and EJS templates. It covers essential topics such as server-side programming, template engines, database integration, node modules, third-party packages, and web application deployment. 
 
 ## Installation
 
@@ -26,7 +19,7 @@ npm install
 After installing the necessary dependencies, you can start the development server by running:
 
 ```bash
-npm start
+npm run start
 ```
 
 This will start the server, and you can navigate to [http://localhost:3000](http://localhost:3000) to view the application in your web browser.
@@ -35,8 +28,35 @@ This will start the server, and you can navigate to [http://localhost:3000](http
 
 Here's an overview of the main directories and files in this repository:
 
-- `public/`: Static files (images, stylesheets, etc.).
+- `public/`: Static files
 - `app.js/`: Includes Express routes for handling HTTP requests, Javascript for data processing and client-side logic.
 - `views/`: EJS templates for rendering HTML.
 - `package.json`: List of dependencies and scripts required to run the code.
+
+## Tools Used
+
+### Development Environment
+* Node.js
+
+### Templating Language
+* EJS
+
+### Back End Framework
+* Express.js
+
+### API Testing
+* Thunder Client
+
+### Hosting 
+* Render (free hosting)
+
+# Features
+
+### Users are able to:
+
+* add images to the gallery
+* add image category
+* filter through images by title, keywords. 
+* delete image
+
 
