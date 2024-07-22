@@ -1,6 +1,6 @@
 # UF1844: Desarrollo de Aplicaciones Web en el Entorno Servidor
 
-Welcome to the UF1844: Desarrollo de Aplicaciones Web en el Entorno Servidor repository! This project is part of the Ironhack Bootcamp and the encompassing Spanish professional certificate, IFCD0210.
+This fully responsive image gallery app, serving as the evaluated project for the UF1844 module is part of the Ironhack Bootcamp and the encompassing Spanish professional certificate, IFCD0210.
 
 ## Overview
 
