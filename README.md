@@ -59,7 +59,7 @@ Here's an overview of the main directories and files in this repository:
 
 * add images to the gallery
 * add image categories
-* filter through the images in the gallery by title or keywords. 
+* filter through the images in the gallery by title or keywords
 * delete images from the gallery
 
 
