@@ -25,7 +25,7 @@ After installing the necessary dependencies, you can start the development serve
 npm run start
 ```
 
-This will start the server, and you can navigate to [http://localhost:3000](http://localhost:8080) to view the application in your web browser.
+This will start the server, and you can navigate to [http://localhost:8080](http://localhost:8080) to view the application in your web browser.
 
 ## Project Structure
 
