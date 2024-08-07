@@ -90,7 +90,7 @@
         <article class="image-container">
           <header class="image-title">
             <%= i.title.toUpperCase() %>
-              <form action="/images/<%= i.id %>/delete" method="post">
+              <form action="/images/<%= i._id %>/delete" method="post">
                 <input style="margin: 0;" class="image-delete-button" type="submit" value="x" />
               </form>
           </header>
