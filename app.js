@@ -45,7 +45,6 @@ const Image = mongoose.model("Image", imageSchema);
 async function main() {
   try {
     await mongoose.connect('mongodb+srv://kevhughes24:kevhughes24@cluster0.qjzwuwk.mongodb.net/PhotoGallery');
-    console.log("Connected to Mongoose");
   } catch (err) {
     console.error(err);
   }
@@ -90,7 +89,6 @@ app.get("/", async (req, res) => {
     messageToBeSent: undefined,
     images /* only one attribute is needed if the key is the same as the value => images: images, */,
   });
-  console.log("three", images)
 });
 
 app.get("/add-image-form", (req, res) => {
@@ -106,13 +104,11 @@ app.post("/add-image-form", async (req, res) => {
   const urltoBeUploaded = req.body.link;
   // !!!! changes made after MongoDB version - checks to see if the image is already in the database
   const isUrlInDatabase = await Image.findOne({ link: urltoBeUploaded });
-  console.log("one", req.body)
 
   if (!isUrlInDatabase) {
     try {
       await getRgb(req.body);
        // !!!! changes made after MongoDB version - saves image data to database
-       console.log("two", req.body)
       await new Image(req.body).save();
       
       res.render("form", {
