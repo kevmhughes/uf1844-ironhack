@@ -46,6 +46,8 @@ Here's an overview of the main directories and files in this repository:
 
 ### Back End Framework
 * Express.js
+* MongoDB
+* Mongoose
 
 ### API Testing
 * Thunder Client
