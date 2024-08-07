@@ -44,7 +44,7 @@ Here's an overview of the main directories and files in this repository:
 ### Templating Language
 * EJS
 
-### Back End Framework
+### Back End
 * Express.js
 * MongoDB
 * Mongoose
