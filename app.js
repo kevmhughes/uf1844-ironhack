@@ -2,25 +2,23 @@
 const express = require("express");
 const morgan = require("morgan");
 const getColors = require("get-image-colors");
-// !!!! changes made after MongoDB version - 
-const mongoose = require('mongoose');
+// !!!! changes made after MongoDB version -
+const mongoose = require("mongoose");
 
-
-
-// !!!! changes made after MongoDB version -  Schema outside of mongoose connect function
+// !!!! changes made to mongoose version -  Schema outside of mongoose connect function
 const imageSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
     maxLength: 30,
-    match: /[A-Za-z0-9 \-_]+/
+    match: /[A-Za-z0-9 \-_]+/,
   },
   link: {
     type: String,
     required: true,
-    match: /^(https):\/\/[^\s/$.?#].[^\s]*$/i
+    match: /^(https):\/\/[^\s/$.?#].[^\s]*$/i,
   },
-  date:{
+  date: {
     type: String,
     required: true,
   },
@@ -30,21 +28,23 @@ const imageSchema = new mongoose.Schema({
   },
   color: {
     type: String,
-    required: true
+    required: true,
   },
   colorText: {
     type: String,
-    required: true
+    required: true,
   },
-})
+});
 
-// !!!! changes made after MongoDB version -  Model outside of mongoose connect function
+// !!!! changes made to mongoose version -  Model outside of mongoose connect function
 const Image = mongoose.model("Image", imageSchema);
 
-// !!!! changes made after MongoDB version -  mongoose connect function
+// !!!! changes made to mongoose version -  mongoose connect function
 async function main() {
   try {
-    await mongoose.connect('mongodb+srv://kevhughes24:kevhughes24@cluster0.qjzwuwk.mongodb.net/PhotoGallery');
+    await mongoose.connect(
+      "mongodb+srv://kevhughes24:kevhughes24@cluster0.qjzwuwk.mongodb.net/PhotoGallery"
+    );
   } catch (err) {
     console.error(err);
   }
@@ -83,7 +83,7 @@ let images;
 // routes
 
 app.get("/", async (req, res) => {
-  // !!!! changes made after MongoDB version - finds all images in images collection in PhotoGallery database (database declared in connect function above)
+  // !!!! changes made to mongoose version - finds all images in images collection in PhotoGallery database (database declared in connect function above)
   images = await Image.find().sort({ date: -1 });
   res.render("home", {
     messageToBeSent: undefined,
@@ -102,15 +102,15 @@ app.get("/add-image-form", (req, res) => {
 
 app.post("/add-image-form", async (req, res) => {
   const urltoBeUploaded = req.body.link;
-  // !!!! changes made after MongoDB version - checks to see if the image is already in the database
+  // !!!! changes made to mongoose version - checks to see if the image is already in the database
   const isUrlInDatabase = await Image.findOne({ link: urltoBeUploaded });
 
   if (!isUrlInDatabase) {
     try {
       await getRgb(req.body);
-       // !!!! changes made after MongoDB version - saves image data to database
+      // !!!! changes made to mongoose version - saves image data to database
       await new Image(req.body).save();
-      
+
       res.render("form", {
         isImagePosted: true,
         imageAlreadyAdded: false,
@@ -163,7 +163,7 @@ app.post("/add-category", (req, res) => {
 });
 
 app.post("/images/:_id/delete", async (req, res) => {
-// !!!! changes made after MongoDB version - deletes one images using the id
+  // !!!! changes made to mongoose version - deletes one image using the id
   await Image.deleteOne({ _id: req.params._id });
   res.redirect("/");
 });
@@ -181,7 +181,9 @@ app.get("/search", async (req, res) => {
   }
 
   // !!!! changes made after MongoDB version - finds all images with title that includes the search query
-  const filteredImages = await Image.find({ title: new RegExp(searchQuery, 'i') })
+  const filteredImages = await Image.find({
+    title: new RegExp(searchQuery, "i"),
+  });
 
   if (filteredImages.length === 0) {
     res.render("home", {
@@ -199,5 +201,4 @@ app.get("/search", async (req, res) => {
 // start server
 app.listen(PORT, async (req, res) => {
   console.log(`The server is running on port ${PORT}`);
-
 });
