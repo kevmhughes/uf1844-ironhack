@@ -2,67 +2,67 @@
 const express = require("express");
 const morgan = require("morgan");
 const getColors = require("get-image-colors");
-const { v4: uuidv4 } = require("uuid");
+// !!!! changes made after MongoDB version - 
+const mongoose = require('mongoose');
+
+
+
+// !!!! changes made after MongoDB version -  Schema outside of mongoose connect function
+const imageSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
+    maxLength: 30,
+    match: /[A-Za-z0-9 \-_]+/
+  },
+  link: {
+    type: String,
+    required: true,
+    match: /^(https):\/\/[^\s/$.?#].[^\s]*$/i
+  },
+  date:{
+    type: String,
+    required: true,
+  },
+  category: {
+    type: String,
+    required: true,
+  },
+  color: {
+    type: String,
+    required: true
+  },
+  colorText: {
+    type: String,
+    required: true
+  },
+})
+
+// !!!! changes made after MongoDB version -  Model outside of mongoose connect function
+const Image = mongoose.model("Image", imageSchema);
+
+// !!!! changes made after MongoDB version -  mongoose connect function
+async function main() {
+  try {
+    await mongoose.connect('mongodb+srv://kevhughes24:kevhughes24@cluster0.qjzwuwk.mongodb.net/PhotoGallery');
+    console.log("Connected to Mongoose");
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+main();
 
 // create express instance
 const app = express();
 
-// defines port: 3000 for dev; process.env.PORT for deployed app
-const PORT = process.env.PORT || 3000;
+// defines port: 8080 for dev; process.env.PORT for deployed app
+const PORT = process.env.PORT || 8080;
 
 //middleware setup
 app.use(morgan("tiny")); // logging requests
 app.use(express.urlencoded({ extended: true })); // parsing form data
 app.use(express.static("public")); // serving static files
-
-// "database"
-let images = [
-  {
-    title: "Mediterranean Tree Frog",
-    link: "https://i.imgur.com/TsNgISr.jpeg",
-    date: "2024-06-28",
-    category: "animals",
-    id: "ef14a51c-8119-488e-97c2-4016302524ed",
-    color: "44 59 18",
-    colorText: "44, 59, 18",
-  },
-  {
-    title: "Sunset Over Tornabous",
-    link: "https://i.imgur.com/5Q9vSnX.jpg",
-    date: "2024-05-24",
-    category: "landscapes",
-    id: "62be796f-9b06-4e08-9353-14027bbc4cd2",
-    color: "198 79 10",
-    colorText: "198, 79, 10",
-  },
-  {
-    title: "Cattle Egret",
-    link: "https://i.imgur.com/Ikhvo1F.jpeg",
-    date: "2024-07-04",
-    category: "animals",
-    id: "16c1a727-128a-461b-b4cc-a55623a629dc",
-    color: "72 112 37",
-    colorText: "72, 112, 37",
-  },
-  {
-    title: "Alpine Marmot",
-    link: "https://i.imgur.com/JNsz2g3.jpeg",
-    date: "2024-07-01",
-    category: "animals",
-    id: "dfed91bf-565a-4380-8591-1fa005a6fb73",
-    color: "120 132 78",
-    colorText: "120, 132, 78",
-  },
-  {
-    title: 'Common Darter',
-    link: 'https://i.imgur.com/RJNKZaS.jpeg',
-    date: '2024-07-02',
-    category: 'animals',
-    id: '7ab38132-02eb-4b68-b3f8-184522230f9c',
-    color: '45 96 10',
-    colorText: '45, 96, 10'
-  },
-];
 
 let categories = ["animals", "landscapes", "cars"];
 
@@ -79,14 +79,18 @@ const getRgb = async (image) => {
   image.colorText = colors[0]._rgb.slice(0, 3).join(", ");
 };
 
+let images;
+
 // routes
-app.get("/", (req, res) => {
-  images.sort((a, b) => new Date(b.date) - new Date(a.date));
-  console.log(images);
+
+app.get("/", async (req, res) => {
+  // !!!! changes made after MongoDB version - finds all images in images collection in PhotoGallery database (database declared in connect function above)
+  images = await Image.find().sort({ date: -1 });
   res.render("home", {
     messageToBeSent: undefined,
     images /* only one attribute is needed if the key is the same as the value => images: images, */,
   });
+  console.log("three", images)
 });
 
 app.get("/add-image-form", (req, res) => {
@@ -100,17 +104,17 @@ app.get("/add-image-form", (req, res) => {
 
 app.post("/add-image-form", async (req, res) => {
   const urltoBeUploaded = req.body.link;
-  const isUrlInDatabase = images.find((i) => i.link == urltoBeUploaded);
+  // !!!! changes made after MongoDB version - checks to see if the image is already in the database
+  const isUrlInDatabase = await Image.findOne({ link: urltoBeUploaded });
+  console.log("one", req.body)
 
   if (!isUrlInDatabase) {
     try {
-      // creates a unique id
-      const uniqueId = uuidv4();
-      // adds unique id to req.body object and assigns it to new image variable
-      const newImage = { ...req.body, id: uniqueId };
-      await getRgb(newImage);
-      images.push(newImage);
-
+      await getRgb(req.body);
+       // !!!! changes made after MongoDB version - saves image data to database
+       console.log("two", req.body)
+      await new Image(req.body).save();
+      
       res.render("form", {
         isImagePosted: true,
         imageAlreadyAdded: false,
@@ -162,12 +166,13 @@ app.post("/add-category", (req, res) => {
   }
 });
 
-app.post("/images/:id/delete", (req, res) => {
-  images = images.filter((i) => i.id !== req.params.id);
+app.post("/images/:_id/delete", async (req, res) => {
+// !!!! changes made after MongoDB version - deletes one images using the id
+  await Image.deleteOne({ _id: req.params._id });
   res.redirect("/");
 });
 
-app.get("/search", (req, res) => {
+app.get("/search", async (req, res) => {
   res.setHeader("Cache-Control", "no-store");
 
   const searchQuery = req.query.title;
@@ -179,9 +184,8 @@ app.get("/search", (req, res) => {
     });
   }
 
-  const filteredImages = images.filter((i) =>
-    i.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // !!!! changes made after MongoDB version - finds all images with title that includes the search query
+  const filteredImages = await Image.find({ title: new RegExp(searchQuery, 'i') })
 
   if (filteredImages.length === 0) {
     res.render("home", {
@@ -197,6 +201,7 @@ app.get("/search", (req, res) => {
 });
 
 // start server
-app.listen(PORT, (req, res) => {
+app.listen(PORT, async (req, res) => {
   console.log(`The server is running on port ${PORT}`);
+
 });
